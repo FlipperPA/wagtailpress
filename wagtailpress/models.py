@@ -2,6 +2,7 @@ from datetime import date
 
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from wagtail.wagtailcore.blocks import CharBlock, TextBlock, URLBlock
 from wagtail.wagtailcore.models import Page
@@ -13,7 +14,7 @@ from wagtail.wagtailsearch import index
 from .blocks import CodeBlock
 
 
-class Posts(Page):
+class Post(Page):
     date = models.DateField("Post Date", default=date.today)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='author')
     excerpt = models.CharField(max_length=250)
@@ -24,7 +25,7 @@ class Posts(Page):
         ('url', URLBlock()),
         ('code', CodeBlock()),
     ])
-    modified = models.DateField("Post Modified")
+    modified = models.DateTimeField("Post Modified", null=True)
 
     search_fields = Page.search_fields + (
         index.SearchField('excerpt'),
@@ -37,6 +38,10 @@ class Posts(Page):
         FieldPanel('excerpt'),
         StreamFieldPanel('content'),
     ]
+
+    def save(self, *args, **kwargs):
+        self.modified = timezone.now()
+        super(Post, self).save(*args, **kwargs)
 
 class BlogIndexPage(Page):
     excerpt = RichTextField(blank=True)
