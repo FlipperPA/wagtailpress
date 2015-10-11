@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block content_class %}template-blogindexpage{% endblock %}
+
+{% block content %}
+    <h1>{{ self.title }}</h1>
+
+    <div class="excerpt">{{ self.excerpt|richtext }}</div>
+{% endblock %}
