@@ -1,27 +1,57 @@
 {% load bootstrap3 %}
 
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html lang="en">
+  
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}(no title){% endblock %}</title>
 
-{% block bootstrap3_content %}
-<div class="container">
-  <h1>{% block title %}(no title){% endblock %}</h1>
+  {% bootstrap_css %}
+  {% bootstrap_javascript jquery=1 %}
 
-  <p>
-    <a href="{% url 'home' %}">home</a>
-    <a href="{% url 'formset_default' %}">formset</a>
-    <a href="{% url 'form_default' %}">form</a>
-    <a href="{% url 'form_by_field' %}">form_by_field</a>
-    <a href="{% url 'form_horizontal' %}">form_horizontal</a>
-    <a href="{% url 'form_inline' %}">form_inline</a>
-    <a href="{% url 'form_with_files' %}">form_with_files</a>
-    <a href="{% url 'pagination' %}">pagination</a>
-    <a href="{% url 'misc' %}">miscellaneous</a>
-  </p>
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+  
+<body role="document" style="padding-top: 70px;">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	  <span class="sr-only">Toggle navigation</span>
+	  <span class="icon-bar"></span>
+	  <span class="icon-bar"></span>
+	  <span class="icon-bar"></span>
+	</button>
+	<a class="navbar-brand" href="#">Bootstrap theme</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+	<ul class="nav navbar-nav">
+	  <li><a href="#">Home!</a></li>
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+	    <ul class="dropdown-menu">
+	      <li><a href="#">Action</a></li>
+	      <li><a href="#">Another action</a></li>
+	    </ul>
+	  </li>
+	</ul>
+      </div>
+    </div>
+  </nav>
+  
+{#    <a href="{% url 'home' %}">home</a> #}
 
-  {% bootstrap_messages %}
+  <div class="container theme-showcase" role="main">
+    {% bootstrap_messages %}
 
-  {% block content %}(no content){% endblock %}
-</div>
-
-{% endblock %}
+    {% block content %}(no content){% endblock %}
+  </div>
+</body>
+</html>
