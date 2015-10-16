@@ -21,6 +21,7 @@ setup(
         'wagtail>=1.0,<2.0',
         'Markdown==2.6.2',
         'Pygments==2.0.2',
+        'django-bootstrap3==6.2.2',
     ],
     classifiers=[
         'Environment :: Web Environment',

@@ -2,8 +2,6 @@
 
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-posts{% endblock %}
-
 {% block content %}
     <h1>{{ self.title }}</h1>
     <p class="meta">{{ self.date }}</p>
@@ -14,5 +12,5 @@
 
     <div class="excerpt">{{ self.excerpt }}</div>
 
-    {{ self.content|richtext }}
+    {{ self.content }}
 {% endblock %}
