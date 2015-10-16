@@ -18,10 +18,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='BlogIndexPage',
+            name='WTPage',
             fields=[
-                ('page_ptr', models.OneToOneField(parent_link=True, to='wagtailcore.Page', auto_created=True, primary_key=True, serialize=False)),
-                ('excerpt', wagtail.wagtailcore.fields.RichTextField(blank=True)),
+                ('page_ptr', models.OneToOneField(to='wagtailcore.Page', auto_created=True, parent_link=True, primary_key=True, serialize=False)),
+                ('content', wagtail.wagtailcore.fields.StreamField((('heading', wagtail.wagtailcore.blocks.CharBlock(classname='full title')), ('paragraph', wagtail.wagtailcore.blocks.TextBlock()), ('image', wagtail.wagtailimages.blocks.ImageChooserBlock()), ('url', wagtail.wagtailcore.blocks.URLBlock()), ('code', wagtail.wagtailcore.blocks.StructBlock((('language', wagtail.wagtailcore.blocks.ChoiceBlock(choices=[('python', 'Python'), ('bash', 'Bash/Shell'), ('html', 'HTML'), ('css', 'CSS'), ('scss', 'SCSS'), ('js', 'JavaScript')])), ('code', wagtail.wagtailcore.blocks.TextBlock()))))))),
+                ('modified', models.DateTimeField(null=True, verbose_name='Post Modified')),
             ],
             options={
                 'abstract': False,
@@ -29,14 +30,14 @@ class Migration(migrations.Migration):
             bases=('wagtailcore.page',),
         ),
         migrations.CreateModel(
-            name='Post',
+            name='WTPost',
             fields=[
-                ('page_ptr', models.OneToOneField(parent_link=True, to='wagtailcore.Page', auto_created=True, primary_key=True, serialize=False)),
-                ('date', models.DateField(verbose_name='Post Date', default=datetime.date.today)),
+                ('page_ptr', models.OneToOneField(to='wagtailcore.Page', auto_created=True, parent_link=True, primary_key=True, serialize=False)),
+                ('date', models.DateField(default=datetime.date.today, verbose_name='Post Date')),
                 ('excerpt', models.CharField(max_length=250)),
                 ('content', wagtail.wagtailcore.fields.StreamField((('heading', wagtail.wagtailcore.blocks.CharBlock(classname='full title')), ('paragraph', wagtail.wagtailcore.blocks.TextBlock()), ('image', wagtail.wagtailimages.blocks.ImageChooserBlock()), ('url', wagtail.wagtailcore.blocks.URLBlock()), ('code', wagtail.wagtailcore.blocks.StructBlock((('language', wagtail.wagtailcore.blocks.ChoiceBlock(choices=[('python', 'Python'), ('bash', 'Bash/Shell'), ('html', 'HTML'), ('css', 'CSS'), ('scss', 'SCSS'), ('js', 'JavaScript')])), ('code', wagtail.wagtailcore.blocks.TextBlock()))))))),
                 ('modified', models.DateTimeField(null=True, verbose_name='Post Modified')),
-                ('author', models.ForeignKey(related_name='author', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='author')),
             ],
             options={
                 'abstract': False,

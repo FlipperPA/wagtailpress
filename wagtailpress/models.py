@@ -14,7 +14,7 @@ from wagtail.wagtailsearch import index
 from .blocks import CodeBlock
 
 
-class Post(Page):
+class WTPost(Page):
     date = models.DateField("Post Date", default=date.today)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='author')
     excerpt = models.CharField(max_length=250)
@@ -41,11 +41,33 @@ class Post(Page):
 
     def save(self, *args, **kwargs):
         self.modified = timezone.now()
-        super(Post, self).save(*args, **kwargs)
+        super(WTPost, self).save(*args, **kwargs)
 
+
+class WTPage(Page):
+    content = StreamField([
+        ('heading', CharBlock(classname="full title")),
+        ('paragraph', TextBlock()),
+        ('image', ImageChooserBlock()),
+        ('url', URLBlock()),
+        ('code', CodeBlock()),
+    ])
+    modified = models.DateTimeField("Post Modified", null=True)
+
+    search_fields = Page.search_fields + (
+        index.SearchField('content'),
+    )
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('content'),
+    ]
+
+
+"""
 class BlogIndexPage(Page):
     excerpt = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('excerpt', classname="full")
     ]
+"""
