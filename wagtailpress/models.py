@@ -15,6 +15,13 @@ from .blocks import CodeBlock
 
 
 class WTPost(Page):
+    """
+    This class will hold blog posts, similar to WordPress' post_type of 'post'.
+    """
+    
+    class Meta:
+        verbose_name = "Post"
+
     date = models.DateField("Post Date", default=date.today)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='author')
     excerpt = models.CharField(max_length=250)
@@ -45,6 +52,13 @@ class WTPost(Page):
 
 
 class WTPage(Page):
+    """
+    This class will hold pages, similar to WordPress' post_type of 'page'.
+    """
+    
+    class Meta:
+        verbose_name = "Page"
+
     content = StreamField([
         ('heading', CharBlock(classname="full title")),
         ('paragraph', TextBlock()),
@@ -52,7 +66,7 @@ class WTPage(Page):
         ('url', URLBlock()),
         ('code', CodeBlock()),
     ])
-    modified = models.DateTimeField("Post Modified", null=True)
+    modified = models.DateTimeField("Page Modified", null=True)
 
     search_fields = Page.search_fields + (
         index.SearchField('content'),
@@ -61,6 +75,10 @@ class WTPage(Page):
     content_panels = Page.content_panels + [
         StreamFieldPanel('content'),
     ]
+
+    def save(self, *args, **kwargs):
+        self.modified = timezone.now()
+        super(WTPage, self).save(*args, **kwargs)
 
 
 """
