@@ -11,10 +11,18 @@ from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailsearch import index
 
+from modelcluster.fields import ParentalKey
+from modelcluster.tags import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+
 from .blocks import CodeBlock
 
 
-class WTPage(Page):
+class WPPageTag(TaggedItemBase):
+    content_object = ParentalKey('wagtailpress.WPPage', related_name='tagged_items')
+
+
+class WPPage(Page):
     """
     This class will hold pages, similar to WordPress' post_type of 'page'.
     """
@@ -29,6 +37,7 @@ class WTPage(Page):
         ('url', URLBlock()),
         ('code', CodeBlock()),
     ])
+    tags = ClusterTaggableManager(through=WPPageTag, blank=True)
     modified = models.DateTimeField("Page Modified", null=True)
 
     search_fields = Page.search_fields + (
@@ -41,10 +50,10 @@ class WTPage(Page):
 
     def save(self, *args, **kwargs):
         self.modified = timezone.now()
-        super(WTPage, self).save(*args, **kwargs)
+        super(WPPage, self).save(*args, **kwargs)
 
 
-class WTPost(WTPage):
+class WPPost(WPPage):
     """
     This class will hold blog posts, similar to WordPress' post_type of 'post'.
     """
@@ -56,7 +65,7 @@ class WTPost(WTPage):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='author', on_delete=models.SET_NULL)
     excerpt = models.CharField(max_length=250)
 
-    search_fields = WTPage.search_fields + (
+    search_fields = WPPage.search_fields + (
         index.SearchField('excerpt'),
         index.SearchField('content'),
     )
