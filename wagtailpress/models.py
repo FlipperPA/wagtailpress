@@ -45,6 +45,7 @@ class WPPage(Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('tags'),
         StreamFieldPanel('content'),
     ]
 
@@ -74,6 +75,7 @@ class WPPost(WPPage):
         FieldPanel('date'),
         FieldPanel('author'),
         FieldPanel('excerpt'),
+        FieldPanel('tags'),
         StreamFieldPanel('content'),
     ]
 
