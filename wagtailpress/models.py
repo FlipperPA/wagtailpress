@@ -22,6 +22,13 @@ class WPPageTag(TaggedItemBase):
     content_object = ParentalKey('wagtailpress.WPPage', related_name='tagged_items')
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
 class WPPage(Page):
     """
     This class will hold pages, similar to WordPress' post_type of 'page'.
@@ -63,7 +70,8 @@ class WPPost(WPPage):
         verbose_name = "Post"
 
     date = models.DateField("Post Date", default=date.today)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, related_name='author', on_delete=models.SET_NULL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='author', on_delete=models.SET_NULL)
+    categories = models.ManyToManyField(Category)
     excerpt = models.CharField(max_length=250)
 
     search_fields = WPPage.search_fields + (
@@ -74,6 +82,7 @@ class WPPost(WPPage):
     content_panels = Page.content_panels + [
         FieldPanel('date'),
         FieldPanel('author'),
+        FieldPanel('categories'),
         FieldPanel('excerpt'),
         FieldPanel('tags'),
         StreamFieldPanel('content'),
