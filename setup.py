@@ -18,7 +18,7 @@ setup(
     author='Timothy Allen',
     author_email='tim@pyphilly.org',
     install_requires=[
-        'wagtail>=1.0,<2.0',
+        'wagtail>=1.0,<1.4',
         'Markdown==2.6.2',
         'Pygments==2.0.2',
         'django-bootstrap3==6.2.2',
