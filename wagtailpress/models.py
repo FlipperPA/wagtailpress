@@ -10,6 +10,7 @@ from wagtail.wagtailcore.fields import StreamField, RichTextField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailsearch import index
+from wagtail.wagtailsnippets.models import register_snippet
 
 from modelcluster.fields import ParentalKey
 from modelcluster.tags import ClusterTaggableManager
@@ -19,11 +20,25 @@ from .blocks import CodeBlock
 
 
 class WPPageTag(TaggedItemBase):
+    """
+    Base class for storing tags for Pages and Posts.
+    """
     content_object = ParentalKey('wagtailpress.WPPage', related_name='tagged_items')
 
 
+@register_snippet
 class Category(models.Model):
+    """
+    Base class for storing categories for Posts.
+    """
+    class Meta:
+        verbose_name_plural = "Categories"
+
     name = models.CharField(max_length=255, blank=True)
+
+    panels = [
+        FieldPanel('name'),
+    ]
 
     def __str__(self):
         return self.name
@@ -32,6 +47,7 @@ class Category(models.Model):
 class WPPage(Page):
     """
     This class will hold pages, similar to WordPress' post_type of 'page'.
+    Posts will inherit from this class, adding additional fields needed.
     """
     
     class Meta:
@@ -48,6 +64,7 @@ class WPPage(Page):
     modified = models.DateTimeField("Page Modified", null=True)
 
     search_fields = Page.search_fields + (
+        index.SearchField('title'),
         index.SearchField('content'),
     )
 
@@ -59,6 +76,9 @@ class WPPage(Page):
     def save(self, *args, **kwargs):
         self.modified = timezone.now()
         super(WPPage, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return 'ID %s: %s' % (str(self.pk), self.title)
 
 
 class WPPost(WPPage):
@@ -75,6 +95,7 @@ class WPPost(WPPage):
     excerpt = models.CharField(max_length=250)
 
     search_fields = WPPage.search_fields + (
+        index.SearchField('title'),
         index.SearchField('excerpt'),
         index.SearchField('content'),
     )
@@ -87,6 +108,9 @@ class WPPost(WPPage):
         FieldPanel('tags'),
         StreamFieldPanel('content'),
     ]
+
+    def __str__(self):
+        return 'ID %s: %s' % (str(self.pk), self.title)
 
 
 """
