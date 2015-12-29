@@ -1,4 +1,4 @@
-Wagtail{ress
+WagtailPress
 ============
 
 WagtailPress is an Django app which extends the Wagtail CMS to be similar to WordPress.
