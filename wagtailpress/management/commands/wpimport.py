@@ -66,15 +66,7 @@ import django_comments as comments
 
 from tagging.models import Tag
 
-from zinnia import __version__
-from zinnia.models.entry import Entry
-from zinnia.models.author import Author
-from zinnia.models.category import Category
-from zinnia.flags import get_user_flagger
-from zinnia.flags import PINGBACK, TRACKBACK
-from zinnia.managers import DRAFT, HIDDEN, PUBLISHED
-from zinnia.signals import disconnect_entry_signals
-from zinnia.signals import disconnect_discussion_signals
+from wagtailpress.models import WPPost, WPPage, Category, WPPageTag
 
 WP_NS = 'http://wordpress.org/export/%s/'
 
@@ -82,9 +74,9 @@ WP_NS = 'http://wordpress.org/export/%s/'
 class Command(LabelCommand):
     """
     Command object for importing a WordPress blog
-    into Zinnia via a WordPress eXtended RSS (WXR) file.
+    into WagtailPress via a WordPress eXtended RSS (WXR) file.
     """
-    help = 'Import a Wordpress blog into Zinnia.'
+    help = 'Import a Wordpress blog into WagtailPress.'
     label = 'WXR file'
     args = 'wordpress.xml'
 
