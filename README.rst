@@ -9,3 +9,5 @@ We're working towards an alpha release. Here's what we've mimiced so far from Wo
 * Posts
 * Tagging
 * Categories
+
+Currently working on a Django management command to import from a WordPress export. Details to come.
