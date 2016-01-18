@@ -56,16 +56,12 @@ from django.utils.html import strip_tags
 from django.utils.six.moves import input
 from django.db.utils import IntegrityError
 from django.utils.encoding import smart_str
-from django.contrib.sites.models import Site
 from django.template.defaultfilters import slugify
 from django.core.management.base import CommandError
 from django.core.management.base import LabelCommand
 from django.core.files.temp import NamedTemporaryFile
 
-import django_comments as comments
-
-from tagging.models import Tag
-
+from wagtail.wagtailcore.models import Page
 from wagtailpress.models import WPPost, WPPage, Category, WPPageTag
 
 WP_NS = 'http://wordpress.org/export/%s/'
@@ -87,7 +83,14 @@ class Command(LabelCommand):
         make_option('--author', dest='author', default='',
                     help='All imported entries belong to specified author'))
 
-    SITE = Site.objects.get_current()
+    p = Page()
+    p.title='WagtailPress Import ' + str(datetime.now())
+    p.slug=p.title.lower().replace(' ', '-')
+    p.depth=0
+    p.save()
+
+    ROOT_PAGE = p.pk
+
     REVERSE_STATUS = {'pending': DRAFT,
                       'draft': DRAFT,
                       'auto-draft': DRAFT,
@@ -361,7 +364,7 @@ class Command(LabelCommand):
                 item_node.findall('category')))
             entry.authors.add(self.authors[item_node.find(
                 '{http://purl.org/dc/elements/1.1/}creator').text])
-            entry.sites.add(self.SITE)
+            entry.sites.add(self.ROOT_PAGE)
 
         return entry, created
 
@@ -456,7 +459,7 @@ class Command(LabelCommand):
 
             comment_dict = {
                 'content_object': entry,
-                'site': self.SITE,
+                'site': self.ROOT_PAGE,
                 'user_name': comment_node.find(
                     '{%s}comment_author' % WP_NS).text[:50],
                 'user_email': comment_node.find(
@@ -469,6 +472,9 @@ class Command(LabelCommand):
                     '{%s}comment_author_IP' % WP_NS).text or None,
                 'is_public': is_public,
                 'is_removed': is_removed, }
+            print(comment_dict)
+
+            """
             comment = comments.get_model()(**comment_dict)
             comment.save()
             if is_pingback:
@@ -477,6 +483,7 @@ class Command(LabelCommand):
             if is_trackback:
                 comment.flags.create(
                     user=get_user_flagger(), flag=TRACKBACK)
+            """
 
             self.write_out(self.style.ITEM('OK\n'))
         entry.comment_count = entry.comments.count()

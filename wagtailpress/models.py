@@ -91,8 +91,14 @@ class WPPost(WPPage):
 
     date = models.DateField("Post Date", default=date.today)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='author', on_delete=models.SET_NULL)
-    categories = models.ManyToManyField(Category)
-    excerpt = models.CharField(max_length=250)
+    categories = models.ManyToManyField(
+        Category,
+        blank=True,
+    )
+    excerpt = models.CharField(
+        max_length=250,
+        blank=True,
+    )
 
     search_fields = WPPage.search_fields + (
         index.SearchField('title'),

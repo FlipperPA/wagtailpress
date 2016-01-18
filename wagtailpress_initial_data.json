@@ -1,1 +1,1 @@
-[{"model": "wagtailpress.wtpage", "fields": {"content": "[{\"value\": \"Here's your blog's first page.\", \"type\": \"paragraph\"}]", "modified": "2015-12-13T12:20:46.036Z"}, "pk": 4}, {"model": "wagtailpress.wtpage", "fields": {"content": "[{\"value\": \"This is your first blog post's content.\", \"type\": \"paragraph\"}]", "modified": "2015-12-13T12:20:06.613Z"}, "pk": 5}, {"model": "wagtailpress.wtpost", "fields": {"excerpt": "This is a blog post excerpt which appears on the blog list page.", "author": 1, "date": "2015-12-13"}, "pk": 5}]
+[]
