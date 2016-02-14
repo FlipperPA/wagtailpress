@@ -20,7 +20,7 @@ setup(
     install_requires=[
         'wagtail>=1.0,<1.4',
         'Markdown==2.6.2',
-        'Pygments==2.0.2',
+        'Pygments==2.1.1',
         'django-bootstrap3==6.2.2',
     ],
     classifiers=[
