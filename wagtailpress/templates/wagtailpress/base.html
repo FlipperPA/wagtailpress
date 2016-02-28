@@ -1,5 +1,11 @@
 {% load bootstrap3 %}
 {% load wagtailcore_tags %}
+{% load wagtailpress_tags %}
+
+{% block menu %}
+    {% get_site_root as site_root %}
+    {% nav parent=site_root calling_page=self %}
+{% endblock %}
 
 <!DOCTYPE html>
 <html lang="en">

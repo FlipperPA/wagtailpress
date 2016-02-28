@@ -1,0 +1,28 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">WagtailPress</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">Home!</a></li>
+                {% for menuitem in menuitems %}
+                    <li class="{% if menuitem.show_dropdown %}dropdown{% endif %}{% if calling_page.url == menuitem.url %} active{% endif %}">
+                    {% if menuitem.show_dropdown %}
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ menuitem.title }} <b class="caret"></b></a>
+                        {% nav_children parent=menuitem %}
+                    {% else %}
+                         <a href="{% pageurl menuitem %}">{{ menuitem.title }}</a>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
