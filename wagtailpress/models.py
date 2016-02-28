@@ -26,6 +26,15 @@ class WPPageTag(TaggedItemBase):
     content_object = ParentalKey('wagtailpress.WPPage', related_name='tagged_items')
 
 
+class Config(models.Model):
+    """
+    Class for storing configuration values for WagtailPress.
+    """
+
+    name = models.CharField(max_length=255, blank=True)
+    value = models.CharField(max_length=255, blank=True)
+
+
 @register_snippet
 class Category(models.Model):
     """
