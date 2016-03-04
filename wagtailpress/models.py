@@ -5,7 +5,7 @@ from django.db import models
 from django.utils import timezone
 
 from wagtail.wagtailcore.blocks import CharBlock, TextBlock, URLBlock
-from wagtail.wagtailcore.models import Page
+from wagtail.wagtailcore.models import Page, Site
 from wagtail.wagtailcore.fields import StreamField, RichTextField
 from wagtail.wagtailadmin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.wagtailimages.blocks import ImageChooserBlock
@@ -26,13 +26,18 @@ class WPPageTag(TaggedItemBase):
     content_object = ParentalKey('wagtailpress.WPPage', related_name='tagged_items')
 
 
+@register_snippet
 class Config(models.Model):
     """
     Class for storing configuration values for WagtailPress.
     """
 
+    site = models.ForeignKey(Site, null=True, blank=True, related_name='site', on_delete=models.SET_NULL)
     name = models.CharField(max_length=255, blank=True)
     value = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return '(' + str(self.site) + ') ' + self.name + ': ' + self.value
 
 
 @register_snippet
